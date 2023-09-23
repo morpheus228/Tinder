@@ -57,10 +57,7 @@ async def main():
     dp['service'] = service
     dp['repository'] = repository
 
-    dp['commands'] = {"/help": "Помощь",
-                      "/menu": "Меню",
-                      "/account": "Аккаунт",
-                      "/admin": "Админ"}
+    dp['commands'] = {"/me": "Моя анкета"}
     
     on_first_startup(repository)
 
