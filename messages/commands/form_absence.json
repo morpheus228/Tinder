@@ -1,0 +1,15 @@
+{
+    "text": [
+        "У тебя нет анкеты."
+    ],
+
+    "keyboard": {
+        "type": "inline",
+        "keys": [
+            [
+                {"text":"Заполнить анкету",
+                "callback_data": "fill_form"}
+            ]
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "text": [
+        "<b>ТВОЯ АНКЕТА:</b>\n\n",
+        "{{form.name}}\n",
+        "{{form.about}}\n",
+        "{{form.request}}"
+    ],
+
+    "keyboard": {
+        "type": "inline",
+        "keys": [
+            [
+                {"text":"Заполнить анкету",
+                "callback_data": "fill_form"}
+            ]
+        ]
+    }
+}
