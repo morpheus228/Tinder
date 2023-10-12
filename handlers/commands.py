@@ -12,6 +12,13 @@ from utils.message_template import MessageTemplate
 router = Router()
 
 
+# Выбор анкет
+# У пользлователя должна быть одна активная анкета
+# Другие анкеты мы удаляем
+# 
+
+
+
 @router.message(Command('start'))
 async def start(message: Message, state: FSMContext, service):
     # проверяем есть ли у челика форма

@@ -7,7 +7,6 @@ from aiogram.types import Message, FSInputFile, PhotoSize, Document, File
 from sqlalchemy.orm import Session
 
 
-
 async def save_document(bot: Bot, user_id: int, document: PhotoSize|Document) -> str:
     file: File = await bot.get_file(document.file_id)
     file_name = file.file_id

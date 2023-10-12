@@ -4,6 +4,9 @@ from config import PostgresConfig
 
 from .users import UsersPostgres
 from .forms import FormsPostgres
+from .matches import MatchesPostgres
+from .rates import RatesPostgres
+from .swiping import SwipingPostgres
 
 from .models import Base
 

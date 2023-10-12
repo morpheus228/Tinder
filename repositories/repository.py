@@ -8,3 +8,6 @@ class Repository:
 		
 		self.users: Users = UsersPostgres(engine)
 		self.forms: Forms = FormsPostgres(engine)
+		self.rates: Rates = RatesPostgres(engine)
+		self.matches: Matches = MatchesPostgres(engine)
+		self.swiping: Swiping = SwipingPostgres(engine)
