@@ -29,12 +29,12 @@ async def swiping_from_command(message: Message, state: State, service: Service,
 
 @router.callback_query(F.data == "swiping")
 async def swiping_from_callback(callback: CallbackQuery, state: State, service: Service, bot: Bot):
-    # await callback.message.edit_text(text=callback.message.text)
-    no_forms = await send_next_form(callback.from_user.id, callback.message, None, state, service)
+    await callback.message.edit_reply_markup()
+    no_forms = await send_next_form(callback.from_user.id, callback.message, None, state, service, True)
 
     if no_forms:
         text, reply_markup = MessageTemplate.from_json('swiping/no_forms').render()
-        await callback.message.edit_text(text=text, reply_markup=reply_markup)
+        await callback.message.answer(text=text, reply_markup=reply_markup)
 
 
 
@@ -64,7 +64,7 @@ async def dislike(callback: CallbackQuery, state: FSMContext, service: Service):
 
 
 
-async def send_next_form(user_id: int, message: Message, prev_form_id: int, state: FSMContext, service: Service) -> bool:
+async def send_next_form(user_id: int, message: Message, prev_form_id: int, state: FSMContext, service: Service, not_delete_message = False) -> bool:
     try:
         form = await service.swiping.get_form(user_id, prev_form_id)
 
@@ -75,7 +75,7 @@ async def send_next_form(user_id: int, message: Message, prev_form_id: int, stat
         await state.update_data(form_id=form.id)
         text, reply_markup = MessageTemplate.from_json('swiping/form').render(form=form)
 
-        if message.photo is None:
+        if not_delete_message or message.photo is None:
             await message.answer_photo(form.photo_1, caption=text, reply_markup=reply_markup)
         else:
             await message.edit_media(InputMediaPhoto(media=form.photo_1, caption=text), reply_markup=reply_markup)

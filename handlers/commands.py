@@ -33,8 +33,7 @@ async def my_form(message: Message, state: State, service: Service, bot: Bot):
 
     if form is not None:
         text, reply_markup = MessageTemplate.from_json('commands/form').render(form=form)
-        await bot.send_photo(message.from_user.id, form.photo_1, 
-                             caption=text, reply_markup=reply_markup)
+        await message.answer_photo(photo=form.photo_1, caption=text, reply_markup=reply_markup)
     
     else:
         text, reply_markup = MessageTemplate.from_json('commands/form_absence').render()
