@@ -9,8 +9,11 @@ from middlewares.user_availability import UserAvailabilityMiddleware
 
 from handlers.commands import router as command_router
 from handlers.form import router as form_router
+from handlers.swiping import router as swiping_router
+from handlers.answers import router as answers_router
 
 from config import Config
+from on_startup import on_startup
 from repositories import Repository, postgres
 from services import Service
 
@@ -21,6 +24,8 @@ logging.basicConfig(level=logging.INFO)
 def register_routers(dp: Dispatcher):
     dp.include_router(command_router)
     dp.include_router(form_router)
+    dp.include_router(swiping_router)
+    dp.include_router(answers_router)
     
 
 def register_middlewares(dp: Dispatcher):
@@ -35,19 +40,13 @@ async def register_default_commands(dp: Dispatcher):
     await dp['bot'].set_my_commands(command_list)
 
 
-def on_first_startup(repository: Repository):
-    from repositories.postgres.models import Base
-    Base.metadata.drop_all(repository.engine)
-    Base.metadata.create_all(repository.engine)
-
-
 async def main():
     config = Config()
     bot = Bot(config.bot.token, parse_mode='HTML')
 
     engine = postgres.get_engine(config.postgres)
     repository = Repository(engine)
-    service = Service(repository, config, bot)
+    service = Service(repository, bot)
 
     dp = Dispatcher(storage=MemoryStorage())
     
@@ -57,15 +56,18 @@ async def main():
     dp['service'] = service
     dp['repository'] = repository
 
-    dp['commands'] = {"/me": "Моя анкета"}
+    dp['commands'] = {"/me": "Моя анкета",
+                      "/swiping": "Смотреть анкеты",
+                      "/my_likes": "Мои лайки"}
     
-    on_first_startup(repository)
+    await on_startup(repository, service)
 
     await register_default_commands(dp)
     
     register_routers(dp)
     register_middlewares(dp)
 
+    # asyncio.create_task(service.answers.start())
     await dp.start_polling(dp['bot'])
 
 

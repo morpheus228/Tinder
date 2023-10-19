@@ -25,4 +25,16 @@ class UsersPostgres(Users):
             session.commit()
             
             return user
-		
+
+    def update(self, user_id: int, **kwargs):
+        user = self.get_by_id(user_id)
+            
+        with Session(self.engine) as session:
+            for attr, value in kwargs.items():
+                user.__setattr__(attr, value)
+
+            session.add(user)
+            session.commit()
+        
+        return user
+	

@@ -5,11 +5,7 @@ from repositories.postgres.models import Form
 
 class Swiping(ABC):
     @abstractmethod
-    async def get_form(self, user_id: int) -> Form:
-        pass
-
-    @abstractmethod
-    async def get_forms(self, user_id: int) -> Form:
+    async def get_form(self, user_id: int, prev_form_id: int) -> int:
         pass
     
     @abstractmethod

@@ -12,3 +12,7 @@ class Users(ABC):
 	@abstractmethod
 	def get_by_id(self, user_id: int) -> User|None:
 		pass
+
+	@abstractmethod
+	def update(self, user_id: int, **kwargs):
+		pass

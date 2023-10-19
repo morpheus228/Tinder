@@ -12,13 +12,6 @@ from utils.message_template import MessageTemplate
 router = Router()
 
 
-# Выбор анкет
-# У пользлователя должна быть одна активная анкета
-# Другие анкеты мы удаляем
-# 
-
-
-
 @router.message(Command('start'))
 async def start(message: Message, state: FSMContext, service):
     # проверяем есть ли у челика форма
@@ -34,12 +27,12 @@ async def start(message: Message, state: FSMContext, service):
         await message.answer(text=text, reply_markup=reply_markup)
 
 
-@router.message(Command("my_profile")) 
+@router.message(Command("me")) 
 async def my_form(message: Message, state: State, service: Service, bot: Bot):
-    form = await service.forms.get(message.from_user.id)
+    form = await service.forms.get_by_user_id(message.from_user.id)
 
     if form is not None:
-        text, reply_markup = MessageTemplate.from_json('form/form').render(form=form)
+        text, reply_markup = MessageTemplate.from_json('commands/form').render(form=form)
         await bot.send_photo(message.from_user.id, form.photo_1, 
                              caption=text, reply_markup=reply_markup)
     

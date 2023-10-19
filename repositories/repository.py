@@ -11,3 +11,8 @@ class Repository:
 		self.rates: Rates = RatesPostgres(engine)
 		self.matches: Matches = MatchesPostgres(engine)
 		self.swiping: Swiping = SwipingPostgres(engine)
+		self.answers: Answers = AnswersPostgres(engine)	
+	
+	def clear(self):
+		Base.metadata.drop_all(self.engine)
+		Base.metadata.create_all(self.engine)

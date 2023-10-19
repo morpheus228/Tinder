@@ -9,7 +9,11 @@ class Forms(ABC):
 		pass
 
 	@abstractmethod
-	async def get(self, user_id: int) -> Form:
+	async def get_by_user_id(self, user_id: int) -> Form:
+		pass
+	
+	@abstractmethod
+	async def get_by_id(self, form_id: int) -> Form:
 		pass
 	
 	# @abstractmethod

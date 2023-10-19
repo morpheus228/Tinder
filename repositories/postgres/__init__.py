@@ -7,6 +7,7 @@ from .forms import FormsPostgres
 from .matches import MatchesPostgres
 from .rates import RatesPostgres
 from .swiping import SwipingPostgres
+from .answers import AnswersPostgres
 
 from .models import Base
 
