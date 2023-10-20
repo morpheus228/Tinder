@@ -11,6 +11,7 @@
         "type": "inline",
         "keys": [
             [{"text":"Изменить анкету", "callback_data": "edit_form"}],
+            [{"text":"Удалить анкету", "callback_data": "delete_form"}],
             [{"text":"Смотреть анкеты", "callback_data": "swiping"}]
         ]
     }

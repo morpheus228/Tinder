@@ -15,6 +15,10 @@ class Forms(ABC):
 	@abstractmethod
 	async def get_by_id(self, form_id: int) -> Form:
 		pass
+
+	@abstractmethod
+	async def delete_user_forms(self, user_id: int):
+		pass
 	
 	# @abstractmethod
 	# async def check_uniqueness(self, api_id: int, api_hash: str, phone_number: str) -> bool:

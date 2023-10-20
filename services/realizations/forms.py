@@ -70,7 +70,9 @@ class FormsService(Forms):
 			form = self.prepare_media(form)
 			
 		return form
-	
+
+	async def delete_user_forms(self, user_id: int):
+		self.repository.delete_by_user_id(user_id)
 	
 	@staticmethod
 	def prepare_media(form):

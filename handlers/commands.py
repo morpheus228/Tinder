@@ -39,3 +39,12 @@ async def my_form(message: Message, state: State, service: Service, bot: Bot):
         text, reply_markup = MessageTemplate.from_json('commands/form_absence').render()
         await message.answer(text=text, reply_markup=reply_markup)
         
+
+@router.callback_query(F.data == "delete_form")
+async def delete_form(callback: CallbackQuery, state: State, service: Service, bot: Bot):
+    await service.forms.delete_user_forms(callback.from_user.id)
+    text, reply_markup = MessageTemplate.from_json('commands/delete_form').render()
+    await callback.message.answer(text, reply_markup=reply_markup)
+    await callback.message.delete()
+
+        

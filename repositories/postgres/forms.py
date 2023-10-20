@@ -27,4 +27,9 @@ class FormsPostgres(Forms):
     def get_by_id(self, form_id: int) -> Form|None:
         with Session(self.engine) as session:
             return session.query(Form).get(form_id)
+        
+    def delete_by_user_id(self, user_id: int):
+        with Session(self.engine) as session:
+            session.query(Form).filter_by(user_id=user_id).delete()
+            session.commit()
 		
