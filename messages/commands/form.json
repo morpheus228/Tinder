@@ -1,7 +1,6 @@
 {
     "text": [
-        "<b>ТВОЯ АНКЕТА:</b>\n\n",
-        "{{form.name}}\n",
+        "<b>{{form.name}}</b>\n\n",
         "<b>Инстиут:</b> {{form.faculty}}\n",
         "<b>Курс:</b> {{form.course}}\n",
         "<b>О себе:</b> {{form.about}}\n",
@@ -11,10 +10,8 @@
     "keyboard": {
         "type": "inline",
         "keys": [
-            [
-                {"text":"Смотреть анкеты",
-                "callback_data": "swiping"}
-            ]
+            [{"text":"Изменить анкету", "callback_data": "edit_form"}],
+            [{"text":"Смотреть анкеты", "callback_data": "swiping"}]
         ]
     }
 }

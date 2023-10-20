@@ -19,12 +19,13 @@ class States(StatesGroup):
 
 
 @router.message(Command("my_likes"))
-async def look_likes(message: Message, state: State, service: Service, bot: Bot):
-    no_forms = await send_next_form(message.from_user.id, message, state, service)
+async def look_likes(message: Message, state: FSMContext, service: Service, bot: Bot):
+    await state.clear()
 
-    if no_forms:
+    if await send_next_form(message.from_user.id, message, state, service):
         text, reply_markup = MessageTemplate.from_json('answers/no_forms').render()
         await message.answer(text=text, reply_markup=reply_markup)
+        await state.clear()
 
 
 @router.callback_query(States.answers, F.data == "like")
@@ -35,7 +36,7 @@ async def like(callback: CallbackQuery, state: FSMContext, service: Service):
 
     await service.answers.create(callback.from_user.id, match.id, form.id, True)
 
-    text, reply_markup = MessageTemplate.from_json('answers/match').render(form=form)
+    text, reply_markup = MessageTemplate.from_json('answers/full_form_with_button').render(form=form)
     await callback.message.edit_media(InputMediaPhoto(media=form.photo_1, caption=text), reply_markup=reply_markup)
 
 
@@ -43,11 +44,10 @@ async def like(callback: CallbackQuery, state: FSMContext, service: Service):
 async def cont(callback: CallbackQuery, state: FSMContext, service: Service):
     await callback.message.edit_reply_markup()
 
-    no_forms = await send_next_form(callback.from_user.id, callback.message, state, service, True)
-
-    if no_forms:
+    if await send_next_form(callback.from_user.id, callback.message, state, service, True):
         text, reply_markup = MessageTemplate.from_json('answers/no_forms').render()
         await callback.message.answer(text=text, reply_markup=reply_markup)
+        await state.clear()
 
 
 @router.callback_query(States.answers, F.data == "dislike")
@@ -58,12 +58,11 @@ async def dislike(callback: CallbackQuery, state: FSMContext, service: Service):
 
     await service.answers.create(callback.from_user.id, match.id, form.id, False)
     
-    no_forms = await send_next_form(callback.from_user.id, callback.message, state, service)
-
-    if no_forms:
+    if await send_next_form(callback.from_user.id, callback.message, state, service):
         text, reply_markup = MessageTemplate.from_json('answers/no_forms').render()
         await callback.message.answer(text=text, reply_markup=reply_markup)
         await callback.message.delete()
+        await state.clear()
 
 
 async def send_next_form(user_id: int, message: Message, state: FSMContext, service: Service, not_delete_message: bool = False) -> bool:
@@ -75,7 +74,7 @@ async def send_next_form(user_id: int, message: Message, state: FSMContext, serv
 
     else:
         await state.update_data(match=match, form=form)
-        text, reply_markup = MessageTemplate.from_json('answers/form').render(form=form)
+        text, reply_markup = MessageTemplate.from_json('answers/form_with_buttons').render(form=form)
 
         if not_delete_message or message.photo is None:
             await message.answer_photo(form.photo_1, caption=text, reply_markup=reply_markup)

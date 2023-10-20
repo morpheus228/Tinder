@@ -41,6 +41,7 @@ class FormsService(Forms):
 			user_id = user_id,
 			username = data['username'],
 			gender = data['gender'],
+			gender_search = data['gender_search'],
 			faculty = data['faculty'],
 			course = data['course'],
 			name = data['name'],

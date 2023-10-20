@@ -1,0 +1,10 @@
+{
+    "text": [
+        "<b>{{form.name}}</b>\n\n",
+        "<b>Инстиут:</b> {{form.faculty}}\n",
+        "<b>Курс:</b> {{form.course}}\n",
+        "<b>О себе:</b> {{form.about}}\n",
+        "<b>Запрос:</b> {{form.request}}\n\n",
+        "Начинайте общаться - @{{form.username}}\n"
+    ]
+}

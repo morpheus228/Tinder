@@ -10,7 +10,7 @@ class Matches(ABC):
         pass
 
     @abstractmethod
-    def update(self, match_id: int, **kwargs) -> Match:
+    def update(self, match_id: int, **kwargs):
         pass
 
     @abstractmethod

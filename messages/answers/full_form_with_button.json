@@ -1,21 +1,18 @@
 {
     "text": [
-        "<b>Его АНКЕТА:</b>\n\n",
-        "{{form.name}}\n",
+        "<b>{{form.name}}</b>\n\n",
         "<b>Инстиут:</b> {{form.faculty}}\n",
         "<b>Курс:</b> {{form.course}}\n",
         "<b>О себе:</b> {{form.about}}\n",
-        "<b>Запрос:</b> {{form.request}}"
+        "<b>Запрос:</b> {{form.request}}\n\n",
+        "Начинайте общаться - @{{form.username}}\n"
     ],
 
     "keyboard": {
         "type": "inline",
         "keys": [
             [
-                {"text":"👍",
-                "callback_data": "like"},
-                {"text":"👎",
-                "callback_data": "dislike"}
+                {"text":"Продолжить", "callback_data": "continue"}
             ]
         ]
     }

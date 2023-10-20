@@ -13,6 +13,7 @@ router = Router()
 
 class States(StatesGroup):
     gender = State()
+    gender_search = State()
     name = State()
     faculty = State()
     course = State()
@@ -21,25 +22,55 @@ class States(StatesGroup):
     photo = State()
 
 
-@router.callback_query(F.data == "fill_form")
+@router.callback_query(F.data.in_({"fill_form", "edit_form"}))
 async def requset_gender(callback: CallbackQuery, state: FSMContext):
-    await callback.message.edit_text(text=callback.message.text)
+    await callback.message.edit_reply_markup()
     text, reply_markup = MessageTemplate.from_json('form/gender').render()
     await callback.message.answer(text=text, reply_markup=reply_markup)
     await state.set_state(States.gender)
 
 @router.message(States.gender)
 async def take_gender(message: Message, state: FSMContext):
-    if message.text == "Парень 💪":
+    text, reply_markup = MessageTemplate.from_json('form/gender').render()
+    buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
+    
+    if message.text == buttons[0]:
         await state.update_data(gender=True)
-        await requset_name(message, state)
+        await requset_gender_search(message, state)
 
-    elif message.text == "Девушка 🌷":
+    elif message.text == buttons[1]:
         await state.update_data(gender=False)
-        await requset_name(message, state)
+        await requset_gender_search(message, state)
     
     else:
         text, reply_markup = MessageTemplate.from_json('form/gender_unsuccess').render()
+        await message.answer(text=text, reply_markup=reply_markup)
+
+
+async def requset_gender_search(message: Message, state: FSMContext):
+    text, reply_markup = MessageTemplate.from_json('form/gender_search').render()
+    await message.answer(text=text, reply_markup=reply_markup)
+    await state.set_state(States.gender_search)
+
+@router.message(States.gender_search)
+async def take_gender_search(message: Message, state: FSMContext):
+    text, reply_markup = MessageTemplate.from_json('form/gender_search').render()
+    buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
+
+    if message.text == buttons[0]:
+        await state.update_data(gender_search=True)
+        await requset_name(message, state)
+
+    elif message.text == buttons[1]:
+        await state.update_data(gender_search=False)
+        await requset_name(message, state)
+    
+    elif message.text == buttons[2]:
+        await state.update_data(gender_search=None)
+        await requset_name(message, state)
+    
+    else:
+        text, reply_markup = MessageTemplate.from_json('form/gender_search_unsuccess').render()
         await message.answer(text=text, reply_markup=reply_markup)
 
 
@@ -61,13 +92,20 @@ async def requset_faculty(message: Message, state: FSMContext):
 
 @router.message(States.faculty)
 async def take_faculty(message: Message, state: FSMContext):
-    await state.update_data(faculty=message.text)
-    await requset_course(message, state)
+    text, reply_markup = MessageTemplate.from_json('form/faculty').render()
+    buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
+
+    if message.text in buttons:
+        await state.update_data(faculty=message.text)
+        await requset_course(message, state)
+    else:
+        text, reply_markup = MessageTemplate.from_json('form/faculty_unsuccess').render()
+        await message.answer(text=text, reply_markup=reply_markup)
 
 
 async def requset_course(message: Message, state: FSMContext):
     text, reply_markup = MessageTemplate.from_json('form/course').render()
-    await message.answer(text=text, reply_markup=reply_markup)
+    await message.answer(text=text, reply_markup=ReplyKeyboardRemove())
     await state.set_state(States.course)
 
 @router.message(States.course)
@@ -105,8 +143,18 @@ async def requset_request(message: Message, state: FSMContext):
 
 @router.message(States.request)
 async def take_request(message: Message, state: FSMContext, service: Service, bot: Bot):
-    await state.update_data(request=message.text, username=message.from_user.username)
-    state_data = await state.get_data()
-    await service.forms.create(message.from_user.id, state_data)
-    await state.clear()
-    await my_form(message, state, service, bot)
+    text, reply_markup = MessageTemplate.from_json('form/request').render()
+    buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
+    
+    if message.text in buttons:
+        await state.update_data(request=message.text, username=message.from_user.username)
+        state_data = await state.get_data()
+        await service.forms.create(message.from_user.id, state_data)
+        await state.clear()
+
+        text, reply_markup = MessageTemplate.from_json('form/success').render()
+        await message.answer(text=text, reply_markup=ReplyKeyboardRemove())
+        await my_form(message, state, service, bot)
+    else:
+        text, reply_markup = MessageTemplate.from_json('form/request_unsuccess').render()
+        await message.answer(text=text, reply_markup=reply_markup)

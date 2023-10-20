@@ -23,9 +23,9 @@ logging.basicConfig(level=logging.INFO)
 
 def register_routers(dp: Dispatcher):
     dp.include_router(command_router)
-    dp.include_router(form_router)
     dp.include_router(swiping_router)
     dp.include_router(answers_router)
+    dp.include_router(form_router)
     
 
 def register_middlewares(dp: Dispatcher):

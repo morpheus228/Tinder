@@ -20,7 +20,7 @@ class MatchesPostgres(Matches):
         with Session(self.engine) as session:
             return session.query(Match).get(match_id)
         
-    def update(self, match_id: int, **kwargs) -> Match:
+    def update(self, match_id: int, **kwargs):
         match = self.get_by_id(match_id)
             
         with Session(self.engine) as session:
@@ -29,8 +29,7 @@ class MatchesPostgres(Matches):
 
             session.add(match)
             session.commit()
-        
-        return match
+
 
 
 		

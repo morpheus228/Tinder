@@ -22,6 +22,7 @@ class Form(Base):
     user_id = Column(BigInteger, ForeignKey('Users.id', ondelete='CASCADE'))
     username = Column(String(256))
     gender = Column(Boolean)
+    gender_search = Column(Boolean)
     name = Column(String(64))
     faculty = Column(String(64))
     course = Column(String(64))

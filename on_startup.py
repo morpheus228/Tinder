@@ -24,14 +24,16 @@ async def create_users(repository: Repository, count: int = 5):
         repository.users.create(users[i])
     return users
 
+gender_searches = [True, False, None]
 
 async def create_forms(repository: Repository, users: list[User], n: int = 2):
     for i in range(len(users)):
-        for j in range(n):
+        for j in range(1):
             id = i*n + j
             repository.forms.create(Form(
                 user_id=users[i].id, 
                 gender=random.choice([True, False]),
+                gender_search=gender_searches[random.choice([0, 1, 2])],
                 name=f"Имя_{id}",
                 faculty=f"Факультет_{id}",
                 course=f"Курс_{id}",
@@ -42,7 +44,7 @@ async def create_forms(repository: Repository, users: list[User], n: int = 2):
             
 async def create_me(repository: Repository, id: int ):
     repository.users.create(User(id=id, username="me"))
-    return repository.forms.create(Form(user_id=id))
+    return repository.forms.create(Form(user_id=id, username='me', gender=True, gender_search=False, name='Кирилл', photo_1='photo_0.jpg'))
 
 
 async def create_likes_to_me(service: Service, form_id: int):

@@ -1,20 +1,3 @@
 {
-    "text": [
-        "<b>Его АНКЕТА:</b>\n\n",
-        "{{form.name}}\n",
-        "<b>Инстиут:</b> {{form.faculty}}\n",
-        "<b>Курс:</b> {{form.course}}\n",
-        "<b>О себе:</b> {{form.about}}\n",
-        "<b>Запрос:</b> {{form.request}}\n\n",
-        "Начинайте общаться - @{{form.username}}\n"
-    ],
-
-    "keyboard": {
-        "type": "inline",
-        "keys": [
-            [
-                {"text":"Продолжить", "callback_data": "continue"}
-            ]
-        ]
-    }
+    "text": "У тебя случился мэтч! Анкета собесденика:"
 }
