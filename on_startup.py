@@ -6,6 +6,7 @@ from services.service import Service
 
 
 async def on_startup(repository: Repository, service: Service):
+    pass
     # Base.metadata.drop_all(repository.engine)
     # Base.metadata.create_all(repository.engine)
 
