@@ -21,7 +21,7 @@ services:
             - postgres
         env_file: .env
         volumes:
-            - ./files:/files
+            - ./files:/tgbot/files
 
 
 volumes:

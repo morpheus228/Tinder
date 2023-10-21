@@ -21,9 +21,7 @@ class SwipingPostgres(Swiping):
                             filter(Form.user_id != user_id).\
                             outerjoin(Rate, and_(Rate.user_id == user_id, Rate.form_id == Form.id)).\
                             filter(Rate.id.is_(None)).all()
-            
-            print(f"Изначально: {[form.id for form in forms]}")
-            
+                        
             return [form.id for form in forms if self.gender_filter(user_form, form)]
         
     # получаем анкеты, которые пользователь оценил отприцательно
@@ -36,9 +34,7 @@ class SwipingPostgres(Swiping):
                             filter(Form.user_id != user_id).\
                             outerjoin(Rate, and_(Rate.user_id == user_id, Rate.form_id == Form.id)).\
                             filter(Rate.value == False).all()
-            
-            print(f"Изначально: {[form.id for form in forms]}")
-            
+                        
             forms = [form.id for form in forms if self.gender_filter(user_form, form)]
             positive_forms = self.get_forms_with_positive_rate(user_id, user_form)
             return list(set(forms) - set(positive_forms))

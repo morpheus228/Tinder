@@ -25,13 +25,11 @@ class SwipingService(Swiping):
         user_form = await self.forms_service.get_by_user_id(user_id)
 
         forms = self.repository.get_forms_without_rate(user_id, user_form)
-        print(forms)
         if len(forms) > 0:
             random.shuffle(forms)
             return await self.forms_service.get_by_id(forms[0])
         
         forms = self.repository.get_forms_with_negative_rate(user_id, user_form)
-        print(forms)
 
         if len(forms) == 0:
             raise NoFormsError()
