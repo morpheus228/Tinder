@@ -19,7 +19,7 @@ async def start(message: Message, state: FSMContext, service: Service):
     
     if form is not None:
         text, reply_markup = MessageTemplate.from_json('commands/form').render(form=form)
-        await message.answer(text=text, reply_markup=reply_markup)
+        await message.answer_photo(photo=form.photo_1, caption=text, reply_markup=reply_markup)
 
     else:
         text, reply_markup = MessageTemplate.from_json('commands/start').render()
