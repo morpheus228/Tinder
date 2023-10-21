@@ -21,17 +21,15 @@ class AnswersService(Answers):
 
     async def get(self, user_id: int) -> tuple[Match, Form]:
         matches = self.repository.get_matches_without_answer_by_user_id(user_id)
-
-        if len(matches) == 0:
-            raise NoFormsError()
-    
         random.shuffle(matches)
 
-        match_id, user_id = matches[0]
-        form = await self.forms_service.get_by_user_id(user_id)
-        match = self.matches_repository.get_by_id(match_id)
-
-        return match, form
+        for match_id, user_id in matches:
+            form = await self.forms_service.get_by_user_id(user_id)
+            if form is not None:
+                match = self.matches_repository.get_by_id(match_id)
+                return match, form
+        
+        raise NoFormsError()
 
     async def create(self, user_id: int, match_id: int, form_id: int, value: bool) -> int|None:
         getter_rate_id = self.rates_repository.create(user_id, form_id, value)
