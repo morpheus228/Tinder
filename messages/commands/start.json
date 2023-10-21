@@ -10,7 +10,7 @@
         "type": "inline",
         "keys": [
             [
-                {"text":"Заполнить анкету",
+                {"text":"Заполнить анкету ✔️",
                 "callback_data": "fill_form"}
             ]
         ]

@@ -34,12 +34,10 @@ async def swiping_from_command(message: Message, state: FSMContext, service: Ser
 
 @router.callback_query(F.data == "swiping")
 async def swiping_from_callback(callback: CallbackQuery, state: State, service: Service, bot: Bot):
-    await callback.message.edit_reply_markup()
-
     if await send_next_form(callback.from_user.id, callback.message, None, state, service, True):
         text, reply_markup = MessageTemplate.from_json('swiping/no_forms').render()
         await callback.message.answer(text=text, reply_markup=reply_markup)
-
+    await callback.message.delete()
 
 @router.callback_query(States.swiping, F.data == "like")
 async def like(callback: CallbackQuery, state: FSMContext, service: Service):

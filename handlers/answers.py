@@ -45,7 +45,7 @@ async def cont(callback: CallbackQuery, state: FSMContext, service: Service):
     await callback.message.edit_reply_markup()
 
     if await send_next_form(callback.from_user.id, callback.message, state, service, True):
-        text, reply_markup = MessageTemplate.from_json('answers/no_forms').render()
+        text, reply_markup = MessageTemplate.from_json('answers/last_form').render()
         await callback.message.answer(text=text, reply_markup=reply_markup)
         await state.clear()
 
@@ -59,7 +59,7 @@ async def dislike(callback: CallbackQuery, state: FSMContext, service: Service):
     await service.answers.create(callback.from_user.id, match.id, form.id, False)
     
     if await send_next_form(callback.from_user.id, callback.message, state, service):
-        text, reply_markup = MessageTemplate.from_json('answers/no_forms').render()
+        text, reply_markup = MessageTemplate.from_json('answers/last_form').render()
         await callback.message.answer(text=text, reply_markup=reply_markup)
         await callback.message.delete()
         await state.clear()

@@ -12,7 +12,7 @@
         "type": "inline",
         "keys": [
             [
-                {"text":"Продолжить", "callback_data": "continue"}
+                {"text":"Продолжить ➡️", "callback_data": "continue"}
             ]
         ]
     }

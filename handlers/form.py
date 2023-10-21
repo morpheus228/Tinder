@@ -24,12 +24,12 @@ class States(StatesGroup):
 
 @router.callback_query(F.data.in_({"fill_form", "edit_form"}))
 async def requset_gender(callback: CallbackQuery, state: FSMContext):
-    await callback.message.edit_reply_markup()
     text, reply_markup = MessageTemplate.from_json('form/gender').render()
     await callback.message.answer(text=text, reply_markup=reply_markup)
+    await callback.message.delete()
     await state.set_state(States.gender)
 
-@router.message(States.gender)
+@router.message(States.gender, F.text != None)
 async def take_gender(message: Message, state: FSMContext):
     text, reply_markup = MessageTemplate.from_json('form/gender').render()
     buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
@@ -52,7 +52,7 @@ async def requset_gender_search(message: Message, state: FSMContext):
     await message.answer(text=text, reply_markup=reply_markup)
     await state.set_state(States.gender_search)
 
-@router.message(States.gender_search)
+@router.message(States.gender_search, F.text != None)
 async def take_gender_search(message: Message, state: FSMContext):
     text, reply_markup = MessageTemplate.from_json('form/gender_search').render()
     buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
@@ -79,7 +79,7 @@ async def requset_name(message: Message, state: FSMContext):
     await message.answer(text=text, reply_markup=ReplyKeyboardRemove())
     await state.set_state(States.name)
 
-@router.message(States.name)
+@router.message(States.name, F.text != None)
 async def take_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await requset_faculty(message, state)
@@ -90,7 +90,7 @@ async def requset_faculty(message: Message, state: FSMContext):
     await message.answer(text=text, reply_markup=reply_markup)
     await state.set_state(States.faculty)
 
-@router.message(States.faculty)
+@router.message(States.faculty, F.text != None)
 async def take_faculty(message: Message, state: FSMContext):
     text, reply_markup = MessageTemplate.from_json('form/faculty').render()
     buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
@@ -108,7 +108,7 @@ async def requset_course(message: Message, state: FSMContext):
     await message.answer(text=text, reply_markup=ReplyKeyboardRemove())
     await state.set_state(States.course)
 
-@router.message(States.course)
+@router.message(States.course, F.text != None)
 async def take_course(message: Message, state: FSMContext):
     await state.update_data(course=message.text)
     await requset_about(message, state)
@@ -119,7 +119,7 @@ async def requset_about(message: Message, state: FSMContext):
     await message.answer(text=text, reply_markup=reply_markup)
     await state.set_state(States.about)
 
-@router.message(States.about)
+@router.message(States.about, F.text != None)
 async def take_about(message: Message, state: FSMContext):
     await state.update_data(about=message.text)
     await requset_photo(message, state)
@@ -141,7 +141,7 @@ async def requset_request(message: Message, state: FSMContext):
     await message.answer(text=text, reply_markup=reply_markup)
     await state.set_state(States.request)
 
-@router.message(States.request)
+@router.message(States.request, F.text != None)
 async def take_request(message: Message, state: FSMContext, service: Service, bot: Bot):
     text, reply_markup = MessageTemplate.from_json('form/request').render()
     buttons = [x.text for sub_arr in reply_markup.keyboard for x in sub_arr]
