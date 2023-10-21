@@ -22,7 +22,7 @@ class FormsPostgres(Forms):
     
     def get_by_user_id(self, user_id: int) -> Form|None:
         with Session(self.engine) as session:
-            return session.query(Form).filter_by(user_id=user_id).order_by(Form.created_at).first()
+            return session.query(Form).filter_by(user_id=user_id).order_by(Form.created_at.desc()).first()
     
     def get_by_id(self, form_id: int) -> Form|None:
         with Session(self.engine) as session:

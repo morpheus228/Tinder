@@ -6,8 +6,8 @@ from services.service import Service
 
 
 async def on_startup(repository: Repository, service: Service):
-    Base.metadata.drop_all(repository.engine)
-    Base.metadata.create_all(repository.engine)
+    # Base.metadata.drop_all(repository.engine)
+    # Base.metadata.create_all(repository.engine)
 
     # users = await create_users(repository)
     # await create_forms(repository, users)
