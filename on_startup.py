@@ -9,12 +9,12 @@ async def on_startup(repository: Repository, service: Service):
     Base.metadata.drop_all(repository.engine)
     Base.metadata.create_all(repository.engine)
 
-    users = await create_users(repository)
-    await create_forms(repository, users)
+    # users = await create_users(repository)
+    # await create_forms(repository, users)
 
-    my_id = 587247376
-    form_id = await create_me(repository, my_id)
-    await create_likes_to_me(service, form_id)
+    # my_id = 587247376
+    # form_id = await create_me(repository, my_id)
+    # await create_likes_to_me(service, form_id)
 
 
 async def create_users(repository: Repository, count: int = 5):

@@ -7,6 +7,7 @@ from aiogram.types.input_media_photo import InputMediaPhoto
 
 from services import Service
 from services.interfaces import NoFormsError
+from utils import get_user_url
 
 from utils.message_template import MessageTemplate
 from utils.send_form import send_form
@@ -36,7 +37,8 @@ async def like(callback: CallbackQuery, state: FSMContext, service: Service):
 
     await service.answers.create(callback.from_user.id, match.id, form.id, True)
 
-    text, reply_markup = MessageTemplate.from_json('answers/full_form_with_button').render(form=form)
+    url = get_user_url(form.user_id)
+    text, reply_markup = MessageTemplate.from_json('answers/full_form_with_button').render(form=form, url=url)
     await callback.message.edit_media(InputMediaPhoto(media=form.photo_1, caption=text), reply_markup=reply_markup)
 
 

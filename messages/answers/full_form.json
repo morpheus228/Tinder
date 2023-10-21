@@ -1,6 +1,6 @@
 {
     "text": [
-        "<b>{{form.name}}</b>\n\n",
+        "<b><a href={{url}}>{{form.name}}</a></b>\n\n",
         "<b>Инстиут:</b> {{form.faculty}}\n",
         "<b>Курс:</b> {{form.course}}\n",
         "<b>О себе:</b> {{form.about}}\n",

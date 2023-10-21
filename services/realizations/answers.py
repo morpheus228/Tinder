@@ -6,6 +6,7 @@ from repositories.postgres.models import Form, Match
 from repositories.repository import Repository
 from services.interfaces import Answers, NoFormsError
 from services.interfaces.forms import Forms
+from utils import get_user_url
 from utils.message_template import MessageTemplate
 
 
@@ -42,7 +43,9 @@ class AnswersService(Answers):
             form = self.forms_repository.get_by_id(liker_rate.form_id)
             text, reply_markup = MessageTemplate.from_json('answers/match').render()
             await self.bot.send_message(liker_rate.user_id, text=text, reply_markup=reply_markup)
-            text, reply_markup = MessageTemplate.from_json('answers/full_form').render(form=form)
+            
+            url = get_user_url(form.user_id)
+            text, reply_markup = MessageTemplate.from_json('answers/full_form').render(form=form, url=url)
             await self.bot.send_photo(liker_rate.user_id, photo=form.photo_1, caption=text, reply_markup=reply_markup)
         
     # async def start(self, interval: int = 10):
